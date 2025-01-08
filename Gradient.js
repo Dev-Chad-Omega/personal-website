@@ -21,35 +21,67 @@ function getGradientColors() {
 // Initialize animation variables
 let animationFrame;
 let startTime = null;
+let isAnimating = false;
 const duration = 10000; // 10 seconds for a complete cycle
 
 // Smooth animation function
 function animate(currentTime) {
-    if (!startTime) startTime = currentTime;
-    const elapsed = currentTime - startTime;
-    const progress = (elapsed % duration) / duration;
+    try {
+        if (!isAnimating) return;
+        
+        if (!startTime) startTime = currentTime;
+        const elapsed = currentTime - startTime;
+        const progress = (elapsed % duration) / duration;
 
-    // Create gradient
-    const gradient = ctx.createLinearGradient(
-        canvas.width * (0.5 + 0.5 * Math.cos(progress * Math.PI * 2)),
-        0,
-        canvas.width * (0.5 + 0.5 * Math.sin(progress * Math.PI * 2)),
-        canvas.height
-    );
+        // Create gradient
+        const gradient = ctx.createLinearGradient(
+            canvas.width * (0.5 + 0.5 * Math.cos(progress * Math.PI * 2)),
+            0,
+            canvas.width * (0.5 + 0.5 * Math.sin(progress * Math.PI * 2)),
+            canvas.height
+        );
 
-    // Add color stops with smooth transitions
-    const colors = getGradientColors();
-    colors.forEach((color, index) => {
-        const offset = (index / (colors.length - 1) + Math.sin(progress * Math.PI * 2 + index) * 0.1) % 1;
-        gradient.addColorStop(offset, color);
-    });
+        // Add color stops with smooth transitions
+        const colors = getGradientColors();
+        colors.forEach((color, index) => {
+            const offset = (index / (colors.length - 1) + Math.sin(progress * Math.PI * 2 + index) * 0.1) % 1;
+            gradient.addColorStop(offset, color);
+        });
 
-    // Apply gradient without clearing
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+        // Apply gradient
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Continue animation immediately
-    animationFrame = requestAnimationFrame(animate);
+        // Continue animation
+        if (isAnimating) {
+            animationFrame = requestAnimationFrame(animate);
+        }
+    } catch (error) {
+        console.error('Animation error:', error);
+        // Attempt to recover
+        startTime = null;
+        if (isAnimating) {
+            animationFrame = requestAnimationFrame(animate);
+        }
+    }
+}
+
+// Start animation
+function startAnimation() {
+    if (!isAnimating) {
+        isAnimating = true;
+        startTime = null;
+        animationFrame = requestAnimationFrame(animate);
+    }
+}
+
+// Stop animation
+function stopAnimation() {
+    isAnimating = false;
+    if (animationFrame) {
+        cancelAnimationFrame(animationFrame);
+        animationFrame = null;
+    }
 }
 
 // Handle window resize
@@ -59,21 +91,26 @@ function handleResize() {
 
 // Initialize
 function init() {
-    setCanvasDimensions();
-    window.addEventListener('resize', handleResize);
-    // Start animation on next frame to ensure proper initialization
-    requestAnimationFrame((time) => {
-        startTime = time;
-        animate(time);
-    });
+    try {
+        setCanvasDimensions();
+        window.addEventListener('resize', handleResize);
+        window.addEventListener('focus', startAnimation);
+        window.addEventListener('blur', stopAnimation);
+        // Start animation
+        startAnimation();
+    } catch (error) {
+        console.error('Initialization error:', error);
+        // Attempt to recover
+        setTimeout(init, 1000);
+    }
 }
 
 // Cleanup function
 function cleanup() {
+    stopAnimation();
     window.removeEventListener('resize', handleResize);
-    if (animationFrame) {
-        cancelAnimationFrame(animationFrame);
-    }
+    window.removeEventListener('focus', startAnimation);
+    window.removeEventListener('blur', stopAnimation);
 }
 
 // Start everything
