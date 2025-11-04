@@ -1,0 +1,45 @@
+:root{
+/* Brand tones (edit freely) */
+--brand-900:#152041; --brand-700:#313B84; --brand-500:#635BFF; --brand-300:#ACCFFC; --brand-50:#F6F9FC;
+
+/* Grays */
+--gray-900:#0B1320; --gray-800:#111827; --gray-700:#334155; --gray-600:#475569;
+--gray-500:#64748B; --gray-400:#94A3B8; --gray-300:#CBD5E1; --gray-200:#E2E8F0; --gray-100:#F1F5F9; --gray-50:#F8FAFC;
+
+/* Hero gradient colors (theme these) */
+--gradient-color-1:#6ec3f4;
+--gradient-color-2:#3a3aff;
+--gradient-color-3:#ff61ab;
+--gradient-color-4:#E63946;
+
+/* Radius / shadows */
+--radius-xl:1.25rem;
+--shadow-lg:0 10px 30px rgba(0,0,0,.10);
+--shadow-sm:0 2px 8px rgba(0,0,0,.06);
+
+/* Motion */
+--ease-spring:cubic-bezier(.2,1,.2,1);
+--dur-quick:.25s;
+--dur-reveal:.5s;
+}
+
+@media (prefers-color-scheme: dark){
+:root{ --brand-50:#0A2540; --gray-50:#0D1420; }
+}
+
+html,body{ height:100%; }
+body{ color:var(--gray-900); background:#f7f8ff; }
+
+.btn{
+transition: transform var(--dur-quick) var(--ease-spring), box-shadow var(--dur-quick);
+will-change: transform;
+}
+.btn:hover{ transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+.btn:active{ transform: translateY(0); }
+
+.revealable{ opacity:0; transform: translateY(12px); transition: var(--dur-reveal) var(--ease-spring); }
+.reveal{ opacity:1; transform:none; }
+
+@media (prefers-reduced-motion: reduce){
+*{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; }
+}
