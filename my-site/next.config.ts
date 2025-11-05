@@ -1,6 +1,7 @@
-import type { NextConfig } from "next";
+﻿import type { NextConfig } from "next";
 
 const repoName = process.env.NEXT_PUBLIC_GITHUB_PAGES;
+const basePath = repoName ? `/${repoName}` : "";
 
 const nextConfig: NextConfig = {
   output: "export",
@@ -8,12 +9,15 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   },
   trailingSlash: true,
-  ...(repoName
+  ...(basePath
     ? {
-        basePath: `/${repoName}`,
-        assetPrefix: `/${repoName}/`,
+        basePath,
+        assetPrefix: `${basePath}/`,
       }
     : {}),
+  env: {
+    NEXT_PUBLIC_BASE_PATH: basePath,
+  },
 };
 
 export default nextConfig;

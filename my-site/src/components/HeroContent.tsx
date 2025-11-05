@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { motion } from "framer-motion";
-import Image from "next/image";
 
 type HeroContentProps = {
   heroHighlights: string[];
@@ -142,6 +141,8 @@ export default function HeroContent({ heroHighlights }: HeroContentProps) {
     "--typing-delay": "0s",
   } as CSSProperties;
 
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
   return (
     <motion.div
       className="grid items-start gap-8 md:grid-cols-[minmax(0,1fr)_minmax(220px,0.85fr)] md:gap-10 lg:gap-16"
@@ -219,7 +220,12 @@ export default function HeroContent({ heroHighlights }: HeroContentProps) {
       >
         <div className="hero-portrait-card glass-card md:ml-auto md:max-w-[240px]">
           <div className="hero-portrait-image">
-            <Image src="/profile.jpg" alt="Portrait of Dave Patel" width={900} height={600} priority />
+            <img
+              src={`${basePath}/profile.jpg`}
+              alt="Portrait of Dave Patel"
+              className="h-auto w-full object-cover"
+              loading="eager"
+            />
           </div>
           <div className="hero-portrait-meta">
             <span className="hero-portrait-meta-title">Media Ready</span>
@@ -231,4 +237,5 @@ export default function HeroContent({ heroHighlights }: HeroContentProps) {
     </motion.div>
   );
 }
+
 

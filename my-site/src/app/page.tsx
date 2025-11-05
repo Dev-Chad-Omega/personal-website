@@ -1,6 +1,5 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import GradientLoader from "@/components/GradientLoader";
 import HeroContent from "@/components/HeroContent";
 import GsapEffectsInit from "@/components/GsapEffectsInit";
@@ -156,6 +155,8 @@ const contactChannels = [
 ];
 
 export default function Page() {
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
   return (
     <main className="relative min-h-screen overflow-x-hidden pb-24 text-slate-900">
       <nav className="sticky top-6 z-30 mx-auto flex w-[min(1100px,calc(100%-32px))] items-center justify-between gap-6 rounded-full border border-slate-200 bg-white/80 px-6 py-3 backdrop-blur-2xl">
@@ -260,13 +261,11 @@ export default function Page() {
                 {project.image ? (
                   <div className="relative mt-2 overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-br from-white via-slate-50 to-slate-100 shadow-sm">
                     <div className="relative aspect-[16/9]">
-                      <Image
-                        src={project.image.src}
+                      <img
+                        src={`${basePath}${project.image.src}`}
                         alt={project.image.alt}
-                        fill
-                        sizes="(min-width: 768px) 50vw, 100vw"
-                        className="object-cover object-top transition-transform duration-700 ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-[1.02]"
-                        priority
+                        className="h-full w-full object-cover object-top transition-transform duration-700 ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-[1.02]"
+                        loading="lazy"
                       />
                     </div>
                   </div>
@@ -412,6 +411,7 @@ export default function Page() {
     </main>
   );
 }
+
 
 
 
