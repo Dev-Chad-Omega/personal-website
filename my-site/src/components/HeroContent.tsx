@@ -192,7 +192,7 @@ export default function HeroContent({ heroHighlights }: HeroContentProps) {
           </motion.a>
           <motion.a
             className="btn button-glow rounded-full border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-slate-700"
-            href="https://drive.google.com/file/d/1_W58JaWBOklIGh_YDWij9C6U-VFRNmu4/view?usp=sharing"
+            href="/Dev%20Patel%20Resume%20fall%202025.pdf"
             target="_blank"
             rel="noopener noreferrer"
             whileHover={{ y: -4 }}

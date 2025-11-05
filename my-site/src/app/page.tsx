@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import GradientLoader from "@/components/GradientLoader";
 import HeroContent from "@/components/HeroContent";
 import GsapEffectsInit from "@/components/GsapEffectsInit";
@@ -70,6 +71,10 @@ const projects = [
       "Built a full-stack dashboard visualizing environmental IoT data with real-time updates and time-series forecasts, reaching 99.9% uptime on Heroku.",
       "Enabled EPA and state regulators to act faster by pairing predictive modeling with imagery analytics, improving forecast accuracy by 20%.",
     ],
+    image: {
+      src: "/OpenCast.png",
+      alt: "OpenCast HAB real-time dashboard showing coastal bloom analytics and alert overlays.",
+    },
   },
   {
     name: "GrantWatch RAG Assistant",
@@ -146,7 +151,7 @@ const publications = [
 const contactChannels = [
   { label: "Email", value: "david.p8115@gmail.com", href: "mailto:david.p8115@gmail.com" },
   { label: "Phone", value: "701-739-4548", href: "tel:+17017394548" },
-  { label: "LinkedIn", value: "linkedin.com/in/dave-p-7a3865345", href: "https://www.linkedin.com/in/dave-p-7a3865345/" },
+  { label: "LinkedIn", value: "linkedin.com/in/dave-patel1", href: "https://www.linkedin.com/in/dave-patel1/" },
   { label: "GitHub", value: "github.com/Dev-Chad-Omega", href: "https://github.com/Dev-Chad-Omega" },
 ];
 
@@ -245,13 +250,27 @@ export default function Page() {
         <div className="mt-8 grid gap-8 md:grid-cols-2">
           {projects.map((project) => (
             <div key={project.name} className="parallax-element" data-parallax data-parallax-speed="0.09">
-              <article className="glass-card flex flex-col gap-4" data-reveal>
+              <article className="glass-card group flex flex-col gap-4" data-reveal>
                 <div className="flex items-center justify-between gap-4">
                   <h3 className="text-xl font-semibold text-slate-900">{project.name}</h3>
                   <span className="rounded-full border border-slate-200 bg-white/80 px-3 py-1 text-xs uppercase tracking-[0.2em] text-slate-500">
                     Feature
                   </span>
                 </div>
+                {project.image ? (
+                  <div className="relative mt-2 overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-br from-white via-slate-50 to-slate-100 shadow-sm">
+                    <div className="relative aspect-[16/9]">
+                      <Image
+                        src={project.image.src}
+                        alt={project.image.alt}
+                        fill
+                        sizes="(min-width: 768px) 50vw, 100vw"
+                        className="object-cover object-top transition-transform duration-700 ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-[1.02]"
+                        priority
+                      />
+                    </div>
+                  </div>
+                ) : null}
                 <div className="flex flex-wrap gap-2 pt-2 text-xs uppercase tracking-[0.18em] text-slate-500">
                   {project.tech.map((tech) => (
                     <span key={tech} className="rounded-full border border-slate-200 bg-white/80 px-3 py-1">
@@ -393,5 +412,8 @@ export default function Page() {
     </main>
   );
 }
+
+
+
 
 
